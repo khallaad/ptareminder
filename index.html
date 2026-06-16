@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTA Meeting Notice — Taqwa High School</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #162032;
+    --navy-light: #1e2f45;
+    --gold: #d4af37;
+    --gold-light: #e8cc6a;
+    --gold-pale: #f5e9b8;
+    --cream: #fdf8ef;
+    --text: #2a2a2a;
+    --muted: #6b6b6b;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'EB Garamond', Georgia, serif;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: var(--navy);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(212,175,55,0.12) 0%, transparent 65%);
+  }
+  .masthead-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+  }
+  .school-emblem {
+    width: 72px;
+    height: 72px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(212,175,55,0.08);
+  }
+  .school-emblem svg { width: 44px; height: 44px; }
+  .masthead-text { flex: 1; }
+  .school-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .notice-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ── HERO BAND ── */
+  .hero {
+    background: var(--navy);
+    padding: 0 32px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 900;
+    font-style: italic;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .hero-title span {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .hero-date-badge {
+    display: inline-block;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 2px;
+    padding: 10px 28px;
+    color: var(--gold-pale);
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+  .hero-date-badge strong { color: var(--gold); font-weight: 700; }
+
+  /* ── SVG ILLUSTRATIONS ── */
+  .illustration-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 600px;
+    flex-wrap: wrap;
+  }
+  .illus-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    flex: 1;
+    min-width: 140px;
+    max-width: 180px;
+  }
+  .illus-card svg { display: block; margin: 0 auto 10px; }
+  .illus-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(212,175,55,0.7);
+    text-align: center;
+  }
+
+  /* ── BODY CONTENT ── */
+  .content-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 32px 40px;
+  }
+  .salutation {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--navy);
+    margin-bottom: 24px;
+  }
+  .body-text {
+    font-size: 18px;
+    line-height: 1.85;
+    color: #3a3a3a;
+    margin-bottom: 20px;
+  }
+
+  /* ── INFO BLOCK ── */
+  .info-block {
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 28px 36px;
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 40px;
+  }
+  .info-item {}
+  .info-item .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .info-item .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .info-item .value.time {
+    font-size: 28px;
+    color: var(--gold-light);
+  }
+
+  /* ── AGENDA ── */
+  .agenda-section {
+    margin: 40px 0;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.3), transparent);
+  }
+  .agenda-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+  .agenda-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 18px;
+    background: rgba(212,175,55,0.04);
+    border: 1px solid rgba(212,175,55,0.12);
+    border-radius: 4px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .agenda-list li .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  /* ── QUOTE BAND ── */
+  .quote-band {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    margin: 0 -32px;
+    padding: 48px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-band::before {
+    content: '\201C';
+    position: absolute;
+    top: -20px; left: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    color: rgba(212,175,55,0.06);
+    line-height: 1;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3vw, 28px);
+    font-style: italic;
+    color: #fff;
+    line-height: 1.6;
+    max-width: 580px;
+    margin: 0 auto 16px;
+    position: relative;
+  }
+  .quote-attr {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── CLOSING ── */
+  .closing-section {
+    padding: 40px 0 24px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    margin-top: 40px;
+  }
+  .closing-section p { font-size: 18px; line-height: 1.8; margin-bottom: 16px; }
+  .sign-off {
+    margin-top: 32px;
+    font-family: 'Playfair Display', serif;
+  }
+  .sign-off .role {
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    padding: 32px;
+    text-align: center;
+    position: relative;
+    margin-top: 0;
+  }
+  .footer-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+  .footer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── HIDDEN TREASURE ── */
+  /* Blends into footer. Only those reading every word reach here. */
+  .treasure-area {
+    padding: 20px 32px 0;
+    text-align: center;
+  }
+  .treasure-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    color: rgba(13,27,42,0.25); /* barely visible on cream */
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    user-select: none;
+  }
+  .treasure-link {
+    display: inline-block;
+    opacity: 0.18;
+    transition: opacity 0.4s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .treasure-link:hover { opacity: 1; }
+  .treasure-link svg { display: block; }
+  .treasure-link:focus { outline: none; opacity: 0.9; }
+
+  @media (max-width: 600px) {
+    .masthead-inner { flex-direction: column; text-align: center; gap: 16px; }
+    .info-block { grid-template-columns: 1fr; }
+    .quote-band { margin: 0 -32px; padding: 40px 32px; }
+    .illustration-row { gap: 10px; }
+    .illus-card { min-width: 120px; padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="school-emblem">
+      <!-- Minimalist lamp/book emblem -->
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 6 L36 18 L22 24 L8 18 Z" stroke="#d4af37" stroke-width="1.5" fill="rgba(212,175,55,0.15)"/>
+        <path d="M8 18 L8 30 L22 36 L36 30 L36 18" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+        <path d="M22 24 L22 36" stroke="#d4af37" stroke-width="1.5"/>
+        <circle cx="22" cy="6" r="2" fill="#d4af37"/>
+      </svg>
+    </div>
+    <div class="masthead-text">
+      <div class="school-name">Taqwa High School · Lagos</div>
+      <div class="notice-label">Official Circular · Parents & Guardians</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">You are invited</div>
+  <h1 class="hero-title">Parent–Teacher<br><span>Assembly</span></h1>
+  <div class="hero-date-badge">
+    <strong>Sunday, 22 June 2025</strong> &nbsp;·&nbsp; 10:00 AM prompt
+  </div>
+
+  <!-- SVG Illustration Row -->
+  <div class="illustration-row">
+    <!-- Handshake / community -->
+    <div class="illus-card">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 28 C6 28 12 20 18 20 L24 20 L30 14" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M42 20 C42 20 36 28 30 28 L24 28 L18 34" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="4" stroke="#d4af37" stroke-width="1.5" fill="rgba(212,175,55,0.15)"/>
+        <line x1="6" y1="28" x2="42" y2="20" stroke="rgba(212,175,55,0.2)" stroke-width="1" stroke-dasharray="2 3"/>
+      </svg>
+      <div class="illus-label">Partnership</div>
+    </div>
+    <!-- Open book -->
+    <div class="illus-card">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 12 L24 16 L40 12 L40 36 L24 40 L8 36 Z" stroke="#d4af37" stroke-width="1.5" fill="rgba(212,175,55,0.08)"/>
+        <line x1="24" y1="16" x2="24" y2="40" stroke="#d4af37" stroke-width="1.5"/>
+        <line x1="12" y1="20" x2="20" y2="22" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+        <line x1="12" y1="25" x2="20" y2="27" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+        <line x1="12" y1="30" x2="20" y2="32" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+        <line x1="28" y1="22" x2="36" y2="20" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+        <line x1="28" y1="27" x2="36" y2="25" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+        <line x1="28" y1="32" x2="36" y2="30" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+      </svg>
+      <div class="illus-label">Knowledge</div>
+    </div>
+    <!-- Growth / seedling -->
+    <div class="illus-card">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 38 L24 22" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24 28 C24 28 18 26 14 20 C20 18 26 22 24 28 Z" stroke="#d4af37" stroke-width="1.5" fill="rgba(212,175,55,0.12)"/>
+        <path d="M24 24 C24 24 30 20 34 14 C28 14 22 18 24 24 Z" stroke="#d4af37" stroke-width="1.5" fill="rgba(212,175,55,0.12)"/>
+        <line x1="16" y1="38" x2="32" y2="38" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="illus-label">Growth</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY CONTENT -->
+<div class="content-wrap">
+
+  <p class="salutation">Dear Parent / Guardian,</p>
+
+  <p class="body-text">
+    We write with warmth and anticipation to invite you to our upcoming 
+    <strong>Parent–Teacher Association (PTA) Meeting</strong> — a cherished moment in our school calendar 
+    where the two most important communities in a child's life come together face to face.
+  </p>
+
+  <p class="body-text">
+    Your presence at this meeting is not a formality — it is a <em>vital contribution</em> to the 
+    education and well-being of your child. The conversations that happen in that hall shape policies, 
+    address concerns, and strengthen the bond between home and school.
+  </p>
+
+  <!-- KEY INFO BLOCK -->
+  <div class="info-block">
+    <div class="info-item">
+      <div class="label">Date</div>
+      <div class="value">Sunday, 22 June 2025</div>
+    </div>
+    <div class="info-item">
+      <div class="label">Time</div>
+      <div class="value time">10:00 AM</div>
+    </div>
+    <div class="info-item">
+      <div class="label">Venue</div>
+      <div class="value">School Assembly Hall</div>
+    </div>
+    <div class="info-item">
+      <div class="label">Dress Code</div>
+      <div class="value">Smart Casual</div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="agenda-section">
+    <div class="section-heading">Agenda Highlights</div>
+    <ul class="agenda-list">
+      <li><span class="num">I</span> Opening: Prayers & Quran reading</li>
+	  <li><span class="num">I</span> Review and adoption of minutes from the last PTA meeting</li>
+	  <li><span class="num">I</span> Chairman's remarks</li>
+      <li><span class="num">II</span> Heads of school's reports — academic performance & term review</li>
+	  <li><span class="num">II</span> Interlude</li>
+	  <li><span class="num">II</span> Pep Talk: Building Partnerships: Parents and Schools Together</li>
+	  <li><span class="num">II</span> Feedback: Questions and contributions from parents and teachers</li>
+	  <li><span class="num">II</span> Closing: Summary of key takeaways; Vote of thanks; Closing prayer</li>
+	</ul>
+  </div>
+
+  <p class="body-text">
+    We have prepared a rich and focused session. Refreshments will be served. 
+    The meeting is expected to close no later than <strong>12:30 PM</strong>, 
+    in full respect of your Sunday.
+  </p>
+
+</div>
+
+<!-- QUOTE BAND -->
+<div class="quote-band">
+  <p class="quote-text">
+    "It takes a whole village to raise a child — and we are grateful 
+    to be building that village together, one conversation at a time."
+  </p>
+  <div class="quote-attr">— Taqwa High School</div>
+</div>
+
+<!-- CLOSING -->
+<div class="content-wrap">
+  <div class="closing-section">
+    <p>
+      We look forward to seeing you — not just as a parent in attendance, 
+      but as a <em>partner in purpose</em>. Your voice matters here. 
+      Your child's school is better because you show up.
+    </p>
+    <p>
+      Please endeavour to arrive by <strong>9:45 AM</strong> so we may begin promptly.
+    </p>
+    <p>
+      For enquiries, please contact the school office: <strong>info@taqwaschools.org</strong>
+    </p>
+
+    <div class="sign-off">
+      <div>Management</div>
+      <div class="role">Taqwa High School, Lagos</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-divider"></div>
+  <div class="footer-text">Taqwa High School · Ifako-Ijaiye, Lagos · Grooming for Life</div>
+  <div class="footer-text" style="margin-top:8px; font-size:11px; opacity:0.6;">Circular Reference: PTA/2025/06 · Issued by School Management</div>
+
+  <!-- HIDDEN TREASURE: gift bag icon, barely visible, sits right under the circular ref line -->
+  <div style="margin-top:18px;">
+    <a class="treasure-link" href="treasure.html" title="You found it." aria-label="Hidden gift">
+      <!-- Gift bag SVG -->
+      <svg width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bag body -->
+        <rect x="4" y="13" width="24" height="20" rx="3" fill="rgba(212,175,55,0.15)" stroke="#d4af37" stroke-width="1.5"/>
+        <!-- Bag handle left arc -->
+        <path d="M11 13 C11 7 21 7 21 13" stroke="#d4af37" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Ribbon horizontal -->
+        <line x1="4" y1="21" x2="28" y2="21" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.6"/>
+        <!-- Ribbon vertical -->
+        <line x1="16" y1="13" x2="16" y2="33" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.6"/>
+        <!-- Bow left -->
+        <path d="M16 19 C14 16 10 16 11 19 C12 22 16 19 16 19Z" fill="#d4af37" fill-opacity="0.5"/>
+        <!-- Bow right -->
+        <path d="M16 19 C18 16 22 16 21 19 C20 22 16 19 16 19Z" fill="#d4af37" fill-opacity="0.5"/>
+      </svg>
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
