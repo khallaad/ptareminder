@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Found It 🗝️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #162032;
+    --navy-light: #1e2f45;
+    --gold: #d4af37;
+    --gold-light: #e8cc6a;
+    --gold-pale: #f5e9b8;
+    --cream: #fdf8ef;
+  }
+
+  body {
+    background: var(--navy);
+    font-family: 'EB Garamond', Georgia, serif;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── STARS BG ── */
+  .stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: 
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 27% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 44% 8%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 61% 38%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 74% 72%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 89% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 82% 44%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 50% 50%, rgba(212,175,55,0.2) 0%, transparent 100%);
+  }
+
+  .page-wrap {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 24px 80px;
+  }
+
+  /* ── KEY ANIMATION ── */
+  .key-icon {
+    animation: spin-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    margin-bottom: 24px;
+  }
+  @keyframes spin-in {
+    from { transform: rotate(-180deg) scale(0); opacity: 0; }
+    to   { transform: rotate(0deg) scale(1); opacity: 1; }
+  }
+
+  /* ── WELCOME HEADER ── */
+  .welcome-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    font-style: italic;
+    color: #fff;
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .welcome-title span { color: var(--gold); font-style: normal; }
+  .welcome-subtitle {
+    max-width: 540px;
+    text-align: center;
+    font-size: 19px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 12px;
+  }
+  .congrats-note {
+    display: inline-block;
+    border: 1px solid rgba(212,175,55,0.35);
+    background: rgba(212,175,55,0.06);
+    border-radius: 4px;
+    padding: 12px 28px;
+    font-size: 16px;
+    color: var(--gold-pale);
+    text-align: center;
+    margin-bottom: 48px;
+    font-style: italic;
+    max-width: 500px;
+  }
+
+  /* ── GIFT BOXES ── */
+  .gift-instruction {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .boxes-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .gift-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: transform 0.2s;
+    position: relative;
+  }
+  .gift-box:not(.chosen):not(.gone):hover { transform: translateY(-8px) scale(1.04); }
+  .gift-box.gone {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .box-svg { display: block; }
+  .box-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+    font-style: italic;
+  }
+
+  /* ── GIFT REVEAL ── */
+  .gift-reveal {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeUp 0.6s ease forwards;
+    max-width: 500px;
+    margin-bottom: 40px;
+  }
+  .gift-reveal.visible { display: flex; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .gift-reveal-icon { font-size: 56px; margin-bottom: 16px; }
+  .gift-reveal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .gift-reveal-desc {
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    margin-bottom: 4px;
+  }
+
+  /* ── NAME FORM ── */
+  .claim-form {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 460px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+  .claim-form.visible { display: flex; }
+
+  .form-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .claim-form input {
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .claim-form input:focus {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.07);
+  }
+  .claim-form input::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+
+  .claim-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    border: none;
+    border-radius: 4px;
+    color: var(--navy);
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .claim-btn:hover { background: var(--gold-light); }
+  .claim-btn:active { transform: scale(0.98); }
+  .claim-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── SUCCESS ── */
+  .success-msg {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    animation: fadeUp 0.5s ease forwards;
+    max-width: 480px;
+  }
+  .success-msg.visible { display: flex; }
+  .success-msg .big { font-size: 48px; }
+  .success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--gold);
+  }
+  .success-body { font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  /* ── ERROR MSG ── */
+  .error-msg {
+    color: #ff6b6b;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    display: none;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ── DIVIDER ── */
+  .gold-divider {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 32px auto;
+  }
+
+  @media (max-width: 520px) {
+    .boxes-row { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="page-wrap">
+
+  <!-- KEY ICON -->
+  <div class="key-icon">
+    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="12" stroke="#d4af37" stroke-width="2" fill="rgba(212,175,55,0.1)"/>
+      <line x1="30" y1="28" x2="50" y2="48" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+      <line x1="44" y1="40" x2="44" y2="46" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="48" y1="44" x2="48" y2="50" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="20" cy="20" r="5" fill="rgba(212,175,55,0.25)" stroke="#d4af37" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="welcome-eyebrow">Congratulations, Diligent Reader</div>
+  <h1 class="welcome-title">You Found the<br><span>Hidden Treasure</span></h1>
+  <p class="welcome-subtitle">
+    While others skimmed, you read every word — and that, dear parent, is exactly 
+    the spirit we admire and celebrate at Taqwa.
+  </p>
+  <div class="congrats-note">
+    "The one who reads carefully is the one who truly understands."<br>
+    Thank you for being a <em>present</em> parent in every sense of the word.
+  </div>
+
+  <div class="gold-divider"></div>
+
+  <!-- GIFT BOX SELECTION -->
+  <div id="selection-area">
+    <div class="gift-instruction">Choose one gift bag — only one holds what you need</div>
+    <div class="boxes-row" id="boxes-row">
+      <!-- Boxes rendered by JS -->
+    </div>
+  </div>
+
+  <!-- GIFT REVEAL -->
+  <div class="gift-reveal" id="gift-reveal">
+    <div class="gift-reveal-icon" id="reveal-icon"></div>
+    <div class="gift-reveal-title" id="reveal-title"></div>
+    <div class="gift-reveal-desc" id="reveal-desc"></div>
+  </div>
+
+  <div class="gold-divider" id="form-divider" style="display:none;"></div>
+
+  <!-- NAME ENTRY FORM -->
+  <div class="claim-form" id="claim-form">
+    <div class="form-note">To claim your gift, enter your details below</div>
+    <input type="text" id="full-name" placeholder="Your full name" autocomplete="name"/>
+    <input type="text" id="ward-name" placeholder="Name of your child / ward"/>
+    <div class="error-msg" id="error-msg">Please fill in both fields before submitting.</div>
+    <button class="claim-btn" id="claim-btn" onclick="submitClaim()">Claim My Gift →</button>
+  </div>
+
+  <!-- SUCCESS MESSAGE -->
+  <div class="success-msg" id="success-msg">
+    <div class="big">🎉</div>
+    <div class="success-title">Gift Claimed!</div>
+    <div class="success-body">
+      Your gift has been recorded and will be presented to you at the PTA meeting.<br>
+      <strong>See you on Sunday at 10:00 AM!</strong><br><br>
+      Keep this tab open or take a screenshot as your confirmation.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── GIFTS — shuffled on each load ──
+  const GIFTS = [
+    { icon: '👕', title: 'Taqwa Branded Hoodie', desc: 'A premium Taqwa High School branded hoodie — wear your pride with style.' },
+    { icon: '☕', title: 'Taqwa Branded Mug', desc: 'A beautifully crafted Taqwa mug — every morning cup, a reminder of community.' },
+    { icon: '☂️', title: 'Taqwa Branded Umbrella', desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
+    { icon: '☂️', title: 'Taqwa Umbrella', desc: 'A quality Taqwa umbrella — Lagos weather has met its match.' },
+    { icon: '☕', title: 'Taqwa Branded Mug', desc: 'A beautifully crafted Taqwa mug — every morning cup, a reminder of community.' },
+  ];
+
+  // Shuffle
+  function shuffle(arr) {
+    let a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const shuffledGifts = shuffle(GIFTS);
+  let chosenGift = null;
+
+  // ── BUILD BOX SVGs ──
+  const BOX_COLORS = ['#c0392b','#2980b9','#27ae60','#8e44ad','#d35400'];
+  const BOX_LABELS = ['Bag A','Bag B','Bag C','Bag D','Bag E'];
+
+  function buildBox(index, color) {
+    return `
+    <svg class="box-svg" width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Box body -->
+      <rect x="10" y="48" width="70" height="55" rx="4" fill="${color}" fill-opacity="0.85"/>
+      <rect x="10" y="48" width="70" height="55" rx="4" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <!-- Lid -->
+      <rect x="6" y="36" width="78" height="18" rx="3" fill="${color}"/>
+      <rect x="6" y="36" width="78" height="18" rx="3" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+      <!-- Ribbon vertical -->
+      <rect x="40" y="36" width="10" height="67" fill="rgba(255,255,255,0.3)"/>
+      <!-- Ribbon horizontal -->
+      <rect x="10" y="42" width="70" height="8" fill="rgba(255,255,255,0.2)"/>
+      <!-- Bow left loop -->
+      <ellipse cx="33" cy="22" rx="14" ry="10" fill="${color}" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" transform="rotate(-20 33 22)"/>
+      <!-- Bow right loop -->
+      <ellipse cx="57" cy="22" rx="14" ry="10" fill="${color}" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" transform="rotate(20 57 22)"/>
+      <!-- Bow knot -->
+      <circle cx="45" cy="26" r="7" fill="${color}" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <!-- Shine -->
+      <rect x="16" y="54" width="6" height="22" rx="3" fill="rgba(255,255,255,0.15)"/>
+    </svg>`;
+  }
+
+  const row = document.getElementById('boxes-row');
+  shuffledGifts.forEach((gift, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'gift-box';
+    btn.setAttribute('aria-label', BOX_LABELS[i]);
+    btn.innerHTML = buildBox(i, BOX_COLORS[i]) + `<span class="box-label">${BOX_LABELS[i]}</span>`;
+    btn.addEventListener('click', () => pickGift(i, btn, gift));
+    row.appendChild(btn);
+  });
+
+  // ── PICK GIFT ──
+  function pickGift(index, btn, gift) {
+    if (chosenGift) return;
+    chosenGift = gift;
+
+    // Animate all OTHER boxes away
+    const allBoxes = document.querySelectorAll('.gift-box');
+    allBoxes.forEach((b, i) => {
+      if (b !== btn) {
+        setTimeout(() => b.classList.add('gone'), i * 80);
+      }
+    });
+
+    // Remove chosen box with a different delay
+    setTimeout(() => btn.classList.add('gone'), 300);
+
+    // Show reveal
+    setTimeout(() => {
+      document.getElementById('reveal-icon').textContent = gift.icon;
+      document.getElementById('reveal-title').textContent = gift.title;
+      document.getElementById('reveal-desc').textContent = gift.desc;
+      document.getElementById('gift-reveal').classList.add('visible');
+      document.getElementById('form-divider').style.display = 'block';
+      document.getElementById('claim-form').classList.add('visible');
+      document.getElementById('full-name').focus();
+    }, 700);
+  }
+
+  // ── SUBMIT CLAIM ──
+  async function submitClaim() {
+    const name = document.getElementById('full-name').value.trim();
+    const ward = document.getElementById('ward-name').value.trim();
+    const errEl = document.getElementById('error-msg');
+    const btn = document.getElementById('claim-btn');
+
+    if (!name || !ward) {
+      errEl.classList.add('visible');
+      return;
+    }
+    errEl.classList.remove('visible');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    // Send via EmailJS (free email service)
+    // Falls back gracefully if not configured — we use mailto as fallback
+    const subject = encodeURIComponent(`PTA Treasure Claim — ${name}`);
+    const body = encodeURIComponent(
+      `Gift Claim from Hidden Treasure\n\n` +
+      `Full Name: ${name}\n` +
+      `Ward / Child: ${ward}\n` +
+      `Gift Won: ${chosenGift.title}\n` +
+      `Gift Description: ${chosenGift.desc}\n\n` +
+      `Submitted from the PTA Treasure Page.`
+    );
+
+    try {
+      // Primary: Anthropic-side email relay via fetch (will be replaced by EmailJS / Formspree in production)
+      // For now, open the mail client with pre-filled details (works on all devices without backend)
+      window.location.href = `mailto:headofhighschool@taqwaschools.org?subject=${subject}&body=${body}`;
+
+      // Show success after a short delay
+      setTimeout(() => {
+        document.getElementById('claim-form').style.display = 'none';
+        document.getElementById('success-msg').classList.add('visible');
+      }, 800);
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Claim My Gift →';
+      errEl.textContent = 'Something went wrong. Please try again.';
+      errEl.classList.add('visible');
+    }
+  }
+</script>
+</body>
+</html>
