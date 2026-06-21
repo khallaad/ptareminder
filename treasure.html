@@ -441,7 +441,7 @@
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="congrats-card">
-    <div class="school-tag">Taqwa Schools · PTA Treasure Hunt</div>
+    <div class="school-tag">Taqwa High School · PTA Treasure Hunt</div>
     <div class="big-icon" id="modal-icon">🎉</div>
     <h2>Congratulations, <span class="recipient-name" id="modal-name">Parent</span>!</h2>
     <div class="gift-line" id="modal-gift">You won: a Gift</div>
@@ -454,15 +454,25 @@
 </div>
 
 <script>
+  /*
+    GIFT POOL — 4 bags remaining.
+    The hoodie has already been won and is permanently excluded below.
+    Pool: 2x Umbrella, 1x Kilishi, 1x Yogofura.
+
+    BUG FIX: previously a gift was only marked "claimed" inside submitClaim(),
+    AFTER the name was submitted. If a visitor picked a bag and never finished
+    submitting (closed the tab, refreshed, etc.), nothing was saved — so the
+    bag reappeared for the next visitor. Now the gift is marked claimed the
+    MOMENT a bag is picked (in pickGift), so a chosen bag can never "come back."
+  */
   const ALL_GIFTS = [
-    { id: 'hoodie',    icon: '👕', title: 'Taqwa Branded Hoodie',    desc: 'A premium Taqwa Schools branded hoodie — wear your pride with style.' },
-    { id: 'yogofura',  icon: '🥤', title: '1 Litre Yogofura',        desc: 'A refreshing 1 litre pack of Yogofura — chilled and ready to enjoy.' },
-    { id: 'kilishi',   icon: '🥩', title: 'Kilishi',                 desc: 'A generous pack of delicious, well-spiced Kilishi.' },
-    { id: 'mug',       icon: '☕', title: 'Taqwa Branded Mug',       desc: 'A beautifully crafted Taqwa mug — every morning cup, a reminder of community.' },
-    { id: 'umbrella',  icon: '☂️', title: 'Taqwa Branded Umbrella',  desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
+    { id: 'umbrella-1', icon: '☂️', title: 'Taqwa Branded Umbrella', desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
+    { id: 'umbrella-2', icon: '☂️', title: 'Taqwa Branded Umbrella', desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
+    { id: 'kilishi',    icon: '🥩', title: 'Kilishi',                 desc: 'A generous pack of delicious, well-spiced Kilishi.' },
+    { id: 'yogofura',   icon: '🥤', title: '1 Litre Yogofura',        desc: 'A refreshing 1 litre pack of Yogofura — chilled and ready to enjoy.' },
   ];
 
-  const STORAGE_KEY = 'taqwa_pta_treasure_claimed_gifts';
+  const STORAGE_KEY = 'taqwa_pta_treasure_claimed_gifts_v2';
 
   function getClaimedIds() {
     try {
@@ -489,8 +499,8 @@
   const claimedIds = getClaimedIds();
   const availableGifts = shuffle(ALL_GIFTS.filter(g => !claimedIds.includes(g.id)));
 
-  const BOX_COLORS = ['#c0392b','#2980b9','#27ae60','#8e44ad','#d35400'];
-  const BOX_LABELS = ['Bag A','Bag B','Bag C','Bag D','Bag E'];
+  const BOX_COLORS = ['#c0392b','#2980b9','#27ae60','#8e44ad'];
+  const BOX_LABELS = ['Bag A','Bag B','Bag C','Bag D'];
 
   function buildBox(color) {
     return `
@@ -538,6 +548,13 @@
     if (chosenGift) return;
     chosenGift = gift;
 
+    // FIX: lock this gift in immediately — the instant it's picked, not at submit.
+    // This guarantees a chosen bag can never reappear for someone else,
+    // even if this visitor abandons the page right after picking.
+    addClaimedId(gift.id);
+    const idx = availableGifts.findIndex(g => g.id === gift.id);
+    if (idx !== -1) availableGifts.splice(idx, 1);
+
     const allBoxes = document.querySelectorAll('.gift-box');
     allBoxes.forEach(b => { b.disabled = true; });
     allBoxes.forEach((b, i) => {
@@ -571,8 +588,7 @@
     btn.disabled = true;
     btn.textContent = 'Submitting…';
 
-    addClaimedId(chosenGift.id);
-
+    // Gift was already locked in at selection time (see pickGift).
     document.getElementById('modal-icon').textContent = chosenGift.icon;
     document.getElementById('modal-name').textContent = name;
     document.getElementById('modal-gift').textContent = `You won: ${chosenGift.title}`;
@@ -587,10 +603,6 @@
     document.getElementById('claim-form').classList.remove('visible');
     document.getElementById('gift-reveal').classList.remove('visible');
     document.getElementById('form-divider').style.display = 'none';
-
-    const remaining = availableGifts.filter(g => g.id !== chosenGift.id);
-    availableGifts.length = 0;
-    availableGifts.push(...remaining);
 
     if (availableGifts.length === 0) {
       showSoldOut();
