@@ -455,24 +455,21 @@
 
 <script>
   /*
-    GIFT POOL — 4 bags remaining.
-    The hoodie has already been won and is permanently excluded below.
-    Pool: 2x Umbrella, 1x Kilishi, 1x Yogofura.
+    GIFT POOL — 3 bags remaining.
+    The hoodie and one umbrella have already been won and are excluded.
+    Pool: 1x Umbrella, 1x Kilishi, 1x Yogofura.
 
-    BUG FIX: previously a gift was only marked "claimed" inside submitClaim(),
-    AFTER the name was submitted. If a visitor picked a bag and never finished
-    submitting (closed the tab, refreshed, etc.), nothing was saved — so the
-    bag reappeared for the next visitor. Now the gift is marked claimed the
-    MOMENT a bag is picked (in pickGift), so a chosen bag can never "come back."
+    Gift is marked claimed the MOMENT a bag is picked (in pickGift), not at
+    submit, so a chosen bag can never reappear for someone else even if the
+    visitor abandons the page right after picking.
   */
   const ALL_GIFTS = [
     { id: 'umbrella-1', icon: '☂️', title: 'Taqwa Branded Umbrella', desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
-    { id: 'umbrella-2', icon: '☂️', title: 'Taqwa Branded Umbrella', desc: 'A sturdy, elegant Taqwa-branded umbrella — stay covered in style.' },
     { id: 'kilishi',    icon: '🥩', title: 'Kilishi',                 desc: 'A generous pack of delicious, well-spiced Kilishi.' },
     { id: 'yogofura',   icon: '🥤', title: '1 Litre Yogofura',        desc: 'A refreshing 1 litre pack of Yogofura — chilled and ready to enjoy.' },
   ];
 
-  const STORAGE_KEY = 'taqwa_pta_treasure_claimed_gifts_v2';
+  const STORAGE_KEY = 'taqwa_pta_treasure_claimed_gifts_v3';
 
   function getClaimedIds() {
     try {
@@ -499,8 +496,8 @@
   const claimedIds = getClaimedIds();
   const availableGifts = shuffle(ALL_GIFTS.filter(g => !claimedIds.includes(g.id)));
 
-  const BOX_COLORS = ['#c0392b','#2980b9','#27ae60','#8e44ad'];
-  const BOX_LABELS = ['Bag A','Bag B','Bag C','Bag D'];
+  const BOX_COLORS = ['#c0392b','#2980b9','#27ae60'];
+  const BOX_LABELS = ['Bag A','Bag B','Bag C'];
 
   function buildBox(color) {
     return `
